@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continent Specific Banner</title>
+    <script>
+        var endpoint = 'https://apip.cc/json';
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                if(response.status !== 'success') {
+                    console.log('Query failed: ' + response.message);
+                    return;
+                }
+                var banner = document.getElementById('banner');
+                // Change banner based on the continent code
+                switch(response.ContinentCode) {
+                    case "EU":
+                        banner.innerHTML = '<a href="https://apip.cc/?eu"><img src="https://apip.cc/banner-eu.png" alt="Europe Banner"></a>';
+                        break;
+                    case "NA":
+                        banner.innerHTML = '<a href="https://apip.cc/?na"><img src="https://apip.cc/banner-na.png" alt="North America Banner"></a>';
+                        break;
+                    case "AS":
+                        banner.innerHTML = '<a href="https://apip.cc/?as"><img src="https://apip.cc/banner-as.png" alt="Asia Banner"></a>';
+                        break;
+                    default:
+                        banner.innerHTML = '<a href="https://apip.cc/?default"><img src="https://apip.cc/banner-default.png" alt="Default Banner"></a>';
+                }
+            }
+        };
+        xhr.open('GET', endpoint, true);
+        xhr.send();
+    </script>
+</head>
+<body>
+    <div id="banner">
+        <!-- Default content if JavaScript fails or is disabled -->
+        <a href="https://apip.cc/?default"><img src="https://apip.cc/banner-default.png" alt="Default Banner"></a>
+    </div>
+</body>
+</html>
